@@ -1,0 +1,368 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Dreamers Solutions ERP APIs",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get list of categories",
+                "operationId": "64e7f64d53050c5582e7f6e59e2e4285",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create a category",
+                "operationId": "8cdcc1c8ebab5e0be2ba6d4ac19969b7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/categories/active": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get list of categories",
+                "operationId": "fdf709f098475eced3fac2590a393ddb",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get category by it's id",
+                "operationId": "f8a52cfc06ed1b07aaac7e2171c60d56",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the category",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid category id"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update a category",
+                "operationId": "7e08582077836097a42794366a76ddd6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the category",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete category",
+                "operationId": "f846e11051f688ef53ade713d30cb068",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the category",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid category id"
+                    }
+                }
+            }
+        },
+        "/categories/{id}/active": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Activate a deleted category",
+                "operationId": "20fcc671913fb75cbd023b76113cb8b9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the category",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid category id"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CategoryRequest": {
+                "title": "CategoryRequest",
+                "description": "Category request body",
+                "required": [
+                    "categoryName",
+                    "active"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the category",
+                        "type": "integer"
+                    },
+                    "categoryName": {
+                        "description": "Name of the category",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Description of the category",
+                        "type": "string"
+                    },
+                    "parentId": {
+                        "description": "Parent category id of the category",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "description": "Active status of the category",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryResponse": {
+                "title": "CategoryResponse",
+                "description": "Category response model",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the category",
+                        "type": "integer"
+                    },
+                    "categoryName": {
+                        "description": "Name of the category",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Description of the category",
+                        "type": "string"
+                    },
+                    "parent": {
+                        "$ref": "#/components/schemas/CategoryRequest"
+                    },
+                    "children": {
+                        "description": "Active status of the category",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryRequest"
+                        }
+                    },
+                    "active": {
+                        "description": "Active status of the category",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRequest": {
+                "title": "UserRequest",
+                "description": "User request body",
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "userRoleId",
+                    "active",
+                    "locations",
+                    "modules"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the user",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Full name of the user",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email of the user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Login Password of the user",
+                        "type": "string"
+                    },
+                    "userRoleId": {
+                        "description": "Id of the user role associated with the user",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "description": "Active status of the user",
+                        "type": "integer"
+                    },
+                    "locations": {
+                        "description": "Location ids, the user can log in",
+                        "type": "array",
+                        "items": {
+                            "type": "int",
+                            "example": 1
+                        },
+                        "example": [
+                            1,
+                            2
+                        ]
+                    },
+                    "modules": {
+                        "description": "Module ids, the user can access",
+                        "type": "array",
+                        "items": {
+                            "type": "int",
+                            "example": 1
+                        },
+                        "example": [
+                            1,
+                            2
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Categories",
+            "description": "Categories"
+        }
+    ]
+}
