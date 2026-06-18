@@ -15,6 +15,24 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
+  /**
+   * @OA\Post(
+   *     path="/login",
+   *     summary="Authenticate user and obtain JWT token",
+   *     tags={"Authentication"},
+   *     @OA\RequestBody(
+   *          required=true,
+   *          @OA\JsonContent(ref="#/components/schemas/LoginRequest")
+   *     ),
+   *     @OA\Response(
+   *          response=200,
+   *          description="Successful authentication",
+   *          @OA\JsonContent(ref="#/components/schemas/UserResponse")
+   *     ),
+   *     @OA\Response(response=401, description="Invalid credentials"),
+   *     @OA\Response(response=500, description="Could not create token")
+   * )
+   */
   public function authenticate(Request $request)
   {
     $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
@@ -50,6 +68,27 @@ class UserController extends Controller
     return $result;
   }
 
+  /**
+   * @OA\Post(
+   *     path="/register",
+   *     summary="Register a new user",
+   *     tags={"Authentication"},
+   *     @OA\RequestBody(
+   *          required=true,
+   *          @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
+   *     ),
+   *     @OA\Response(
+   *          response=201,
+   *          description="User registered successfully",
+   *          @OA\JsonContent(
+   *              type="object",
+   *              @OA\Property(property="user", ref="#/components/schemas/UserResponse"),
+   *              @OA\Property(property="token", type="string", description="JWT access token")
+   *          )
+   *     ),
+   *     @OA\Response(response=400, description="Validation error")
+   * )
+   */
   public function register(Request $request) {
     $validator = Validator::make($request->json()->all(), [
         'name' => 'required|string|max:255',
@@ -72,6 +111,24 @@ class UserController extends Controller
     return response()->json(compact('user','token'),201);
   }
 
+  /**
+   * @OA\Get(
+   *     path="/user",
+   *     summary="Get authenticated user",
+   *     tags={"Users"},
+   *     security={{"bearerAuth":{}}},
+   *     @OA\Response(
+   *          response=200,
+   *          description="Success",
+   *          @OA\JsonContent(
+   *              type="object",
+   *              @OA\Property(property="user", ref="#/components/schemas/UserResponse")
+   *          )
+   *     ),
+   *     @OA\Response(response=404, description="User not found"),
+   *     @OA\Response(response=401, description="Token expired, invalid, or absent")
+   * )
+   */
   public function getAuthenticatedUser() {
     try {
         if (! $user = JWTAuth::parseToken()->authenticate()) {
@@ -88,6 +145,38 @@ class UserController extends Controller
     return response()->json(compact('user'));
   }
 
+  /**
+   * @OA\Get(
+   *     path="/users/permissions/{locationId}/{moduleId}",
+   *     summary="Get user permissions by location and module",
+   *     tags={"Users"},
+   *     security={{"bearerAuth":{}}},
+   *     @OA\Parameter(
+   *         name="locationId",
+   *         in="path",
+   *         description="Location id",
+   *         @OA\Schema(type="integer"),
+   *         required=true,
+   *         example=1
+   *     ),
+   *     @OA\Parameter(
+   *         name="moduleId",
+   *         in="path",
+   *         description="Module id",
+   *         @OA\Schema(type="integer"),
+   *         required=true,
+   *         example=1
+   *     ),
+   *     @OA\Response(
+   *          response=200,
+   *          description="Success",
+   *          @OA\JsonContent(
+   *              type="array",
+   *              @OA\Items(ref="#/components/schemas/PermissionResponse")
+   *          )
+   *     )
+   * )
+   */
   public function getUserPermissionsByLocationAndModule($locationId, $moduleId) {
     $user = User::find(Auth::id());
 

@@ -4,6 +4,12 @@
         "title": "Dreamers Solutions ERP APIs",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API Server"
+        }
+    ],
     "paths": {
         "/categories": {
             "get": {
@@ -26,7 +32,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -58,7 +69,12 @@
                     "400": {
                         "description": "Invalid request"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/categories/active": {
@@ -82,7 +98,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/categories/{id}": {
@@ -119,7 +140,12 @@
                     "400": {
                         "description": "Invalid category id"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -164,7 +190,12 @@
                     "400": {
                         "description": "Invalid request"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -192,7 +223,12 @@
                     "400": {
                         "description": "Invalid category id"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/categories/{id}/active": {
@@ -222,7 +258,783 @@
                     "400": {
                         "description": "Invalid category id"
                     }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/companies/{id}": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Get company details",
+                "operationId": "fbaf0a639542a6c9b1bb7bf06209944a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompanyResponse"
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+        },
+        "/open": {
+            "get": {
+                "tags": [
+                    "Data"
+                ],
+                "summary": "Get public data (no authentication required)",
+                "operationId": "e70a92815f586c3ada997cbfa358027f",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "This data is open and can be accessed without the client being authenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/measure-units": {
+            "get": {
+                "tags": [
+                    "Measure Units"
+                ],
+                "summary": "Get list of measure units",
+                "operationId": "6931d7cff070feab46920b5f44014a2a",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MeasureUnitResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Measure Units"
+                ],
+                "summary": "Create a measure unit",
+                "operationId": "ef3be914ad164b98cb8c1f982bb60966",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MeasureUnitRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeasureUnitResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/measure-units/{id}": {
+            "get": {
+                "tags": [
+                    "Measure Units"
+                ],
+                "summary": "Get measure unit by id",
+                "operationId": "2b7529e930b3361af196f06fb3b6a8c1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the measure unit",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeasureUnitResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid measure unit id"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Measure Units"
+                ],
+                "summary": "Update a measure unit",
+                "operationId": "c1bcaa798161ec9e0e5fe92d2eae65f8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the measure unit",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MeasureUnitRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeasureUnitResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Measure Units"
+                ],
+                "summary": "Delete measure unit",
+                "operationId": "fae42fab6c28f36e44f4ac4b62b6f36c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the measure unit",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeasureUnitResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid measure unit id"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/permissions/{locationId}/{moduleId}": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Get permissions for menu by location and module",
+                "operationId": "a8fbd1036cc62a063ec65ab800ac5737",
+                "parameters": [
+                    {
+                        "name": "locationId",
+                        "in": "path",
+                        "description": "Location id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "moduleId",
+                        "in": "path",
+                        "description": "Module id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PermissionResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get list of products",
+                "operationId": "423f7e42ca4971f5d3d5f88cac408ce3",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a product",
+                "operationId": "f425b83e5de0cea82c8e391e28a15886",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/products/active": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get list of active products",
+                "operationId": "6fa8c8df31f7040d72e2d82699109ec0",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get product by id",
+                "operationId": "2fe3bea93c8144748c70d56a04ed9130",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the product",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid product id"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product",
+                "operationId": "9491c2cb86033310194e954a3fb2d772",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the product",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete product",
+                "operationId": "ebc8f1c81b2e9b0e47ef0930addcdf79",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the product",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid product id"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/products/{id}/active": {
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Activate a deleted product",
+                "operationId": "c17245f9c264a3b457c2c1506ee50aa0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the product",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid product id"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/suppliers": {
+            "post": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Create a supplier",
+                "operationId": "46dfbac76fc7f5d0081936ad062d82cd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupplierRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupplierResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate user and obtain JWT token",
+                "operationId": "9507d6722550903567336641568f1d4e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful authentication",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "500": {
+                        "description": "Could not create token"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "operationId": "f1fde7f4a932e393f6042d1b92e65b0a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResponse"
+                                        },
+                                        "token": {
+                                            "description": "JWT access token",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get authenticated user",
+                "operationId": "68da8368cc218f46c3fd874d45d6cbbf",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Token expired, invalid, or absent"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/permissions/{locationId}/{moduleId}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user permissions by location and module",
+                "operationId": "aa838322d1a8e7ef1793808cbf3fc0d5",
+                "parameters": [
+                    {
+                        "name": "locationId",
+                        "in": "path",
+                        "description": "Location id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "moduleId",
+                        "in": "path",
+                        "description": "Module id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PermissionResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -292,6 +1104,286 @@
                 },
                 "type": "object"
             },
+            "CompanyResponse": {
+                "title": "CompanyResponse",
+                "description": "Company details",
+                "properties": {
+                    "id": {
+                        "description": "Company id",
+                        "type": "integer"
+                    },
+                    "company_name": {
+                        "description": "Company name",
+                        "type": "string"
+                    },
+                    "company_address1": {
+                        "description": "Address line 1",
+                        "type": "string"
+                    },
+                    "company_address2": {
+                        "description": "Address line 2",
+                        "type": "string"
+                    },
+                    "company_address3": {
+                        "description": "Address line 3",
+                        "type": "string"
+                    },
+                    "company_tel1": {
+                        "description": "Telephone 1",
+                        "type": "string"
+                    },
+                    "company_tel2": {
+                        "description": "Telephone 2",
+                        "type": "string"
+                    },
+                    "company_fax": {
+                        "description": "Fax number",
+                        "type": "string"
+                    },
+                    "company_email": {
+                        "description": "Company email",
+                        "type": "string"
+                    },
+                    "company_web": {
+                        "description": "Company website",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MeasureUnitRequest": {
+                "title": "MeasureUnitRequest",
+                "description": "Measure unit request body",
+                "required": [
+                    "unitName"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the measure unit",
+                        "type": "integer"
+                    },
+                    "unitName": {
+                        "description": "Name of the measure unit",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Description of the measure unit",
+                        "type": "string"
+                    },
+                    "active": {
+                        "description": "Active status of the measure unit",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MeasureUnitResponse": {
+                "title": "MeasureUnitResponse",
+                "description": "Measure unit response model",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the measure unit",
+                        "type": "integer"
+                    },
+                    "unit_name": {
+                        "description": "Name of the measure unit",
+                        "type": "string"
+                    },
+                    "unit_code": {
+                        "description": "Code of the measure unit",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Description of the measure unit",
+                        "type": "string"
+                    },
+                    "active": {
+                        "description": "Active status of the measure unit",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductRequest": {
+                "title": "ProductRequest",
+                "description": "Product request body",
+                "required": [
+                    "productName",
+                    "productTypeId",
+                    "active"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the product",
+                        "type": "integer"
+                    },
+                    "itemCode": {
+                        "description": "Item code of the product",
+                        "type": "string"
+                    },
+                    "productName": {
+                        "description": "Name of the product",
+                        "type": "string"
+                    },
+                    "productDescription": {
+                        "description": "Description of the product",
+                        "type": "string"
+                    },
+                    "productTypeId": {
+                        "description": "Product type id",
+                        "type": "integer"
+                    },
+                    "categoryId": {
+                        "description": "Category id",
+                        "type": "integer"
+                    },
+                    "lowStockQty": {
+                        "description": "Low stock quantity threshold",
+                        "type": "number"
+                    },
+                    "unitId": {
+                        "description": "Measure unit id",
+                        "type": "integer"
+                    },
+                    "onSale": {
+                        "description": "On sale status",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "description": "Active status of the product",
+                        "type": "integer"
+                    },
+                    "companyId": {
+                        "description": "Company id",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductResponse": {
+                "title": "ProductResponse",
+                "description": "Product response model",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the product",
+                        "type": "integer"
+                    },
+                    "itemCode": {
+                        "description": "Item code of the product",
+                        "type": "string"
+                    },
+                    "productName": {
+                        "description": "Name of the product",
+                        "type": "string"
+                    },
+                    "productDescription": {
+                        "description": "Description of the product",
+                        "type": "string"
+                    },
+                    "productTypeId": {
+                        "description": "Product type id",
+                        "type": "integer"
+                    },
+                    "categoryId": {
+                        "description": "Category id",
+                        "type": "integer"
+                    },
+                    "lowStockQty": {
+                        "description": "Low stock quantity threshold",
+                        "type": "number"
+                    },
+                    "unitId": {
+                        "description": "Measure unit id",
+                        "type": "integer"
+                    },
+                    "onSale": {
+                        "description": "On sale status",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "description": "Active status of the product",
+                        "type": "integer"
+                    },
+                    "companyId": {
+                        "description": "Company id",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SupplierRequest": {
+                "title": "SupplierRequest",
+                "description": "Supplier creation request body",
+                "required": [
+                    "first_name"
+                ],
+                "properties": {
+                    "first_name": {
+                        "description": "Supplier first name",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "description": "Supplier last name",
+                        "type": "string"
+                    },
+                    "company_name": {
+                        "description": "Supplier company name",
+                        "type": "string"
+                    },
+                    "contact_person": {
+                        "description": "Contact person name",
+                        "type": "string"
+                    },
+                    "mobile_no": {
+                        "description": "Mobile number",
+                        "type": "string"
+                    },
+                    "active": {
+                        "description": "Active status",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SupplierResponse": {
+                "title": "SupplierResponse",
+                "description": "Supplier response model",
+                "properties": {
+                    "id": {
+                        "description": "Supplier id",
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "description": "Supplier first name",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "description": "Supplier last name",
+                        "type": "string"
+                    },
+                    "company_name": {
+                        "description": "Supplier company name",
+                        "type": "string"
+                    },
+                    "contact_person": {
+                        "description": "Contact person name",
+                        "type": "string"
+                    },
+                    "mobile_no": {
+                        "description": "Mobile number",
+                        "type": "string"
+                    },
+                    "contact_detail_id": {
+                        "description": "Contact detail id",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "description": "Active status",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
             "UserRequest": {
                 "title": "UserRequest",
                 "description": "User request body",
@@ -356,6 +1448,156 @@
                     }
                 },
                 "type": "object"
+            },
+            "LoginRequest": {
+                "title": "LoginRequest",
+                "description": "Login credentials",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "title": "RegisterRequest",
+                "description": "User registration body",
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Full name of the user",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string"
+                    },
+                    "password_confirmation": {
+                        "description": "Password confirmation",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResponse": {
+                "title": "UserResponse",
+                "description": "Authenticated user response",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the user",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Full name of the user",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email of the user",
+                        "type": "string"
+                    },
+                    "user_role_id": {
+                        "description": "User role id",
+                        "type": "integer"
+                    },
+                    "active": {
+                        "description": "Active status of the user",
+                        "type": "integer"
+                    },
+                    "token": {
+                        "description": "JWT access token",
+                        "type": "string"
+                    },
+                    "locations": {
+                        "description": "Locations the user can access",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "modules": {
+                        "description": "Modules the user can access",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "PermissionResponse": {
+                "title": "PermissionResponse",
+                "description": "Permission record",
+                "properties": {
+                    "id": {
+                        "description": "Permission id",
+                        "type": "integer"
+                    },
+                    "permission_code": {
+                        "description": "Permission code",
+                        "type": "string"
+                    },
+                    "fxml_path": {
+                        "description": "FXML path for menu permission",
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "description": "Display name",
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "description": "Parent permission id",
+                        "type": "integer"
+                    },
+                    "depth": {
+                        "description": "Permission depth in hierarchy",
+                        "type": "integer"
+                    },
+                    "permission_type": {
+                        "description": "Permission type",
+                        "type": "string"
+                    },
+                    "active": {
+                        "description": "Active status",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT token obtained from the login endpoint",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },
@@ -363,6 +1605,38 @@
         {
             "name": "Categories",
             "description": "Categories"
+        },
+        {
+            "name": "Companies",
+            "description": "Companies"
+        },
+        {
+            "name": "Data",
+            "description": "Data"
+        },
+        {
+            "name": "Measure Units",
+            "description": "Measure Units"
+        },
+        {
+            "name": "Permissions",
+            "description": "Permissions"
+        },
+        {
+            "name": "Products",
+            "description": "Products"
+        },
+        {
+            "name": "Suppliers",
+            "description": "Suppliers"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
         }
     ]
 }

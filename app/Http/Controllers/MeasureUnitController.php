@@ -21,22 +21,105 @@ class MeasureUnitController extends Controller
         $this->measureUnitService = $measureUnitService;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/measure-units",
+     *     summary="Create a measure unit",
+     *     tags={"Measure Units"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/MeasureUnitRequest")
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MeasureUnitResponse")
+     *     ),
+     *     @OA\Response(response=400, description="Invalid request")
+     * )
+     */
     public function createUnit(MeasureUnitRequest $request) {
         $measureUnit = MeasureUnitDto::fromRequest($request);
         $measureUnit = $this->measureUnitService->createMeasureUnit($measureUnit);
         return response()->json($measureUnit, 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/measure-units",
+     *     summary="Get list of measure units",
+     *     tags={"Measure Units"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *          response=200,
+     *          description="Success",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/MeasureUnitResponse")
+     *          )
+     *     )
+     * )
+     */
     public function getAllMeasureUnits() {
         $categories = MeasureUnit::get();
         return response()->json($categories, 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/measure-units/{id}",
+     *     summary="Get measure unit by id",
+     *     tags={"Measure Units"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Id of the measure unit",
+     *         @OA\Schema(type="integer"),
+     *         required=true,
+     *         example=1
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Success",
+     *          @OA\JsonContent(ref="#/components/schemas/MeasureUnitResponse")
+     *     ),
+     *     @OA\Response(response=400, description="Invalid measure unit id")
+     * )
+     */
     public function getMeasureUnit($id) {
         $measureUnit = MeasureUnit::find('id', $id);
         return response()->json($measureUnit, 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/measure-units/{id}",
+     *     summary="Update a measure unit",
+     *     tags={"Measure Units"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Id of the measure unit",
+     *         @OA\Schema(type="integer"),
+     *         required=true,
+     *         example=1
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/MeasureUnitRequest")
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/MeasureUnitResponse")
+     *     ),
+     *     @OA\Response(response=400, description="Invalid request"),
+     *     @OA\Response(response=500, description="Server error")
+     * )
+     */
     public function updateMeasureUnit($id, Request $request) {
         try {
             $measureUnit = MeasureUnit::find($id);
@@ -57,6 +140,28 @@ class MeasureUnitController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/measure-units/{id}",
+     *     summary="Delete measure unit",
+     *     tags={"Measure Units"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Id of the measure unit",
+     *         @OA\Schema(type="integer"),
+     *         required=true,
+     *         example=1
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Success",
+     *          @OA\JsonContent(ref="#/components/schemas/MeasureUnitResponse")
+     *     ),
+     *     @OA\Response(response=400, description="Invalid measure unit id")
+     * )
+     */
     public function deleteMeasureUnit($id) {
         $measureUnit = MeasureUnit::find($id);
 

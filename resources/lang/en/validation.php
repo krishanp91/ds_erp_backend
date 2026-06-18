@@ -16,6 +16,25 @@ return [
             'max' => 'Category name exceeds maximum :max characters.',
             'unique' => 'Category name already taken.',
         ],
+        'productName' => [
+            'required' => 'Product name is required.',
+            'max' => 'Product name exceeds maximum :max characters.',
+        ],
+        'productTypeId' => [
+            'required' => 'Product type is required.',
+            'integer' => 'Product type must be a valid integer.',
+        ],
+        'active' => [
+            'required' => 'Active status is required.',
+            'integer' => 'Active status must be a valid integer.',
+            'in' => 'Active status must be 0 or 1.',
+        ],
+        'itemCode' => [
+            'max' => 'Item code exceeds maximum :max characters.',
+        ],
+        'productDescription' => [
+            'max' => 'Product description exceeds maximum :max characters.',
+        ],
     ],
     "category.update.name.exists" => "Category name already taken.",
     "measure.unit.update.name.exists" => "Measure unit name already taken.",

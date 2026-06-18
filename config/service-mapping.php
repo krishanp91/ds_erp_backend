@@ -9,6 +9,10 @@ return [
         [
             App\Services\MeasureUnitService::class,
             App\Services\Impl\MeasureUnitServiceImpl::class
+        ],
+        [
+            App\Services\ProductService::class,
+            App\Services\Impl\ProductServiceImpl::class
         ]
     ]
 ];

@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\MeasureUnitController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Validators\CreateSupplierValidator;
@@ -41,6 +42,15 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('categories/{id}', [CategoryController::class, 'updateCategory']);
     Route::delete('categories/{id}', [CategoryController::class, 'deleteCategory']);
     Route::put('categories/{id}/active', [CategoryController::class, 'activateCategory']);
+
+    //product routes
+    Route::post('products', [ProductController::class, 'createProduct']);
+    Route::get('products', [ProductController::class, 'getAllProducts']);
+    Route::get('products/active', [ProductController::class, 'getActiveProducts']);
+    Route::get('products/{id}', [ProductController::class, 'getProduct']);
+    Route::put('products/{id}', [ProductController::class, 'updateProduct']);
+    Route::delete('products/{id}', [ProductController::class, 'deleteProduct']);
+    Route::put('products/{id}/active', [ProductController::class, 'activateProduct']);
 
     //measure unit routes
     Route::post('measure-units', [MeasureUnitController::class, 'createUnit']);

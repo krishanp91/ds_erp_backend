@@ -23,6 +23,7 @@ class CategoryController extends Controller
      *     path="/categories",
      *     summary="Create a category",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(ref="#/components/schemas/CategoryRequest")
@@ -46,6 +47,7 @@ class CategoryController extends Controller
      *     path="/categories",
      *     summary="Get list of categories",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *          response=200, 
      *          description="Success",
@@ -68,6 +70,7 @@ class CategoryController extends Controller
      *     path="/categories/active",
      *     summary="Get list of categories",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *          response=200, 
      *          description="Success",
@@ -90,6 +93,7 @@ class CategoryController extends Controller
      *     path="/categories/{id}",
      *     summary="Get category by it's id",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -117,6 +121,7 @@ class CategoryController extends Controller
      *     path="/categories/{id}",
      *     summary="Update a category",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -149,6 +154,7 @@ class CategoryController extends Controller
      *     path="/categories/{id}",
      *     summary="Delete category",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -175,6 +181,7 @@ class CategoryController extends Controller
      *     path="/categories/{id}/active",
      *     summary="Activate a deleted category",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
