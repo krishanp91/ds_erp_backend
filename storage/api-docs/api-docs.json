@@ -18,6 +18,18 @@
                 ],
                 "summary": "Get list of categories",
                 "operationId": "64e7f64d53050c5582e7f6e59e2e4285",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filter categories by active state. When true, only active (active=1) categories are returned; when false, only inactive (active=0) categories are returned. When omitted or empty, all categories are returned.",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -333,6 +345,18 @@
                 ],
                 "summary": "Get list of measure units",
                 "operationId": "6931d7cff070feab46920b5f44014a2a",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filter measure units by active state. When true, only active (active=1) measure units are returned; when false, only inactive (active=0) measure units are returned. When omitted or empty, all measure units are returned.",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",

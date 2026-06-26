@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 interface CategoryService {
     function createCategory(CategoryDto $categoryDto): CategoryDto;
 
-    function getAllCategories(): Collection;
+    function getAllCategories(?string $active = null): Collection;
 
     function getActiveCategories(): Collection;
 

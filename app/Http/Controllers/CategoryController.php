@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Services\CategoryService;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 use App\Models\Category;
 
@@ -48,6 +49,14 @@ class CategoryController extends Controller
      *     summary="Get list of categories",
      *     tags={"Categories"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="active",
+     *         in="query",
+     *         description="Filter categories by active state. When true, only active (active=1) categories are returned; when false, only inactive (active=0) categories are returned. When omitted or empty, all categories are returned.",
+     *         required=false,
+     *         allowEmptyValue=true,
+     *         @OA\Schema(type="boolean")
+     *     ),
      *     @OA\Response(
      *          response=200, 
      *          description="Success",
@@ -60,8 +69,8 @@ class CategoryController extends Controller
      *     )
      * )
      */
-    public function getAllCategories(): JsonResponse {
-        $categories = $this->categoryService->getAllCategories();
+    public function getAllCategories(Request $request): JsonResponse {
+        $categories = $this->categoryService->getAllCategories($request->query('active'));
         return response()->json($categories, 200);
     }
 

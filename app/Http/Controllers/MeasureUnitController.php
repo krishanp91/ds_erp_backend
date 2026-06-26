@@ -51,6 +51,14 @@ class MeasureUnitController extends Controller
      *     summary="Get list of measure units",
      *     tags={"Measure Units"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="active",
+     *         in="query",
+     *         description="Filter measure units by active state. When true, only active (active=1) measure units are returned; when false, only inactive (active=0) measure units are returned. When omitted or empty, all measure units are returned.",
+     *         required=false,
+     *         allowEmptyValue=true,
+     *         @OA\Schema(type="boolean")
+     *     ),
      *     @OA\Response(
      *          response=200,
      *          description="Success",
@@ -61,9 +69,17 @@ class MeasureUnitController extends Controller
      *     )
      * )
      */
-    public function getAllMeasureUnits() {
-        $categories = MeasureUnit::get();
-        return response()->json($categories, 200);
+    public function getAllMeasureUnits(Request $request) {
+        $active = $request->query('active');
+
+        $query = MeasureUnit::withTrashed();
+        if ($active !== null && $active !== '') {
+            $isActive = filter_var($active, FILTER_VALIDATE_BOOLEAN);
+            $query->where('active', $isActive ? 1 : 0);
+        }
+
+        $measureUnits = $query->get();
+        return response()->json($measureUnits, 200);
     }
 
     /**

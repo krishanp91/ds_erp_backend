@@ -32,9 +32,14 @@ class CategoryServiceImpl implements CategoryService {
         }
     }
 
-    public function getAllCategories(): Collection {
+    public function getAllCategories(?string $active = null): Collection {
         try {
-            $categories = Category::with('children')->with('parent')->withTrashed()->get();
+            $query = Category::with('children')->with('parent')->withTrashed();
+            if ($active !== null && $active !== '') {
+                $isActive = filter_var($active, FILTER_VALIDATE_BOOLEAN);
+                $query->where('active', $isActive ? 1 : 0);
+            }
+            $categories = $query->get();
             $result = new Collection();
             $categories->map(function($item, $key) use ($result): Dto {
                 return $result[] = CategoryDto::fromModel($item);
