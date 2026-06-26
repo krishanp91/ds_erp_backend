@@ -17,12 +17,21 @@ class FrontendCase
 
     public function handle(Request $request, Closure $next)
     {
-        $request->replace(
-            $this->convertKeysToCase(
-                self::CASE_CAMEL,
-                $request->post()
-            )
-        );
+        if ($request->isMethod('GET') || $request->isMethod('HEAD')) {
+            $request->query->replace(
+                $this->convertKeysToCase(
+                    self::CASE_CAMEL,
+                    $request->query->all()
+                )
+            );
+        } else {
+            $request->replace(
+                $this->convertKeysToCase(
+                    self::CASE_CAMEL,
+                    $request->post()
+                )
+            );
+        }
         $response = $next($request);
         if ($response instanceof JsonResponse) {
             $response->setData(
