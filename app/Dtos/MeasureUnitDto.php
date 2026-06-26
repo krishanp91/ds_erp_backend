@@ -74,7 +74,7 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  * @property int $id
  * @property string|null $unitName
  * @property string|null $description
- * @property bool $active
+ * @property int $active
  * @property Carbon|null $createdAt
  * @property Carbon|null $updatedAt
  * @property Carbon|null $deletedAt
