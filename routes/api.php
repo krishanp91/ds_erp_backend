@@ -6,6 +6,9 @@ use App\Http\Controllers\MeasureUnitController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TaxCategoryController;
+use App\Http\Controllers\TaxCategoryTaxController;
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Validators\CreateSupplierValidator;
 
@@ -51,6 +54,32 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('products/{id}', [ProductController::class, 'updateProduct']);
     Route::delete('products/{id}', [ProductController::class, 'deleteProduct']);
     Route::put('products/{id}/active', [ProductController::class, 'activateProduct']);
+
+    //tax routes
+    Route::post('taxes', [TaxController::class, 'createTax']);
+    Route::get('taxes', [TaxController::class, 'getAllTaxes']);
+    Route::get('taxes/active', [TaxController::class, 'getActiveTaxes']);
+    Route::get('taxes/{id}', [TaxController::class, 'getTax']);
+    Route::put('taxes/{id}', [TaxController::class, 'updateTax']);
+    Route::delete('taxes/{id}', [TaxController::class, 'deleteTax']);
+    Route::put('taxes/{id}/active', [TaxController::class, 'activateTax']);
+
+    //tax category routes
+    Route::post('tax-categories', [TaxCategoryController::class, 'createTaxCategory']);
+    Route::get('tax-categories', [TaxCategoryController::class, 'getAllTaxCategories']);
+    Route::get('tax-categories/active', [TaxCategoryController::class, 'getActiveTaxCategories']);
+    Route::get('tax-categories/{id}', [TaxCategoryController::class, 'getTaxCategory']);
+    Route::put('tax-categories/{id}', [TaxCategoryController::class, 'updateTaxCategory']);
+    Route::delete('tax-categories/{id}', [TaxCategoryController::class, 'deleteTaxCategory']);
+    Route::put('tax-categories/{id}/active', [TaxCategoryController::class, 'activateTaxCategory']);
+
+    //tax category tax routes
+    Route::post('tax-category-taxes', [TaxCategoryTaxController::class, 'createTaxCategoryTax']);
+    Route::get('tax-category-taxes', [TaxCategoryTaxController::class, 'getAllTaxCategoryTaxes']);
+    Route::get('tax-category-taxes/{id}', [TaxCategoryTaxController::class, 'getTaxCategoryTax']);
+    Route::put('tax-category-taxes/{id}', [TaxCategoryTaxController::class, 'updateTaxCategoryTax']);
+    Route::delete('tax-category-taxes/{id}', [TaxCategoryTaxController::class, 'deleteTaxCategoryTax']);
+    Route::put('tax-category-taxes/{id}/active', [TaxCategoryTaxController::class, 'activateTaxCategoryTax']);
 
     //measure unit routes
     Route::post('measure-units', [MeasureUnitController::class, 'createUnit']);

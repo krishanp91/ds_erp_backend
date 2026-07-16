@@ -38,4 +38,6 @@ return [
     ],
     "category.update.name.exists" => "Category name already taken.",
     "measure.unit.update.name.exists" => "Measure unit name already taken.",
+    "tax.update.name.exists" => "Tax name already taken.",
+    "tax_category.update.name.exists" => "Tax category name already taken.",
 ];

@@ -13,7 +13,8 @@ class Product extends Model
 
     protected $fillable = [
         'item_code', 'product_name', 'product_description', 'product_type_id',
-        'category_id', 'low_stock_qty', 'unit_id', 'on_sale', 'active', 'company_id'
+        'category_id', 'low_stock_qty', 'unit_id', 'on_sale', 'active', 'company_id',
+        'tax_category_id'
     ];
 
     protected $guarded = ['id', 'deleted_at'];
@@ -31,6 +32,11 @@ class Product extends Model
     public function company()
     {
         return $this->belongsTo('App\Models\Company', 'company_id');
+    }
+
+    public function taxCategory()
+    {
+        return $this->belongsTo('App\Models\TaxCategory', 'tax_category_id');
     }
 
     public static function boot()

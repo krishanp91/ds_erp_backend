@@ -14,23 +14,14 @@ use Illuminate\Support\Facades\Log;
 
 class ProductServiceImpl implements ProductService
 {
+    private const RELATIONS = ['category', 'measureUnit', 'company', 'taxCategory'];
+
     public function createProduct(ProductDto $productDto): ProductDto
     {
         try {
-            $product = Product::create([
-                'item_code' => $productDto->itemCode,
-                'product_name' => $productDto->productName,
-                'product_description' => $productDto->productDescription,
-                'product_type_id' => $productDto->productTypeId,
-                'category_id' => $productDto->categoryId,
-                'low_stock_qty' => $productDto->lowStockQty ?? 0,
-                'unit_id' => $productDto->unitId,
-                'on_sale' => $productDto->onSale ?? 0,
-                'active' => $productDto->active,
-                'company_id' => $productDto->companyId,
-            ]);
+            $product = Product::create($this->mapDtoToAttributes($productDto));
 
-            return ProductDto::fromModel($product->load(['category', 'measureUnit', 'company']));
+            return ProductDto::fromModel($product->load(self::RELATIONS));
         } catch (QueryException $e) {
             Log::error("SQL exception thrown ".$e);
             throw $e;
@@ -43,13 +34,9 @@ class ProductServiceImpl implements ProductService
     public function getAllProducts(): Collection
     {
         try {
-            $products = Product::with(['category', 'measureUnit', 'company'])->withTrashed()->get();
-            $result = new Collection();
-            $products->map(function ($item) use ($result): Dto {
-                return $result[] = ProductDto::fromModel($item);
-            });
+            $products = Product::with(self::RELATIONS)->withTrashed()->get();
 
-            return collect($result);
+            return $this->mapProductsToDtoCollection($products);
         } catch (QueryException $e) {
             throw $e;
         } catch (Exception $e) {
@@ -61,15 +48,11 @@ class ProductServiceImpl implements ProductService
     public function getActiveProducts(): Collection
     {
         try {
-            $products = Product::with(['category', 'measureUnit', 'company'])
+            $products = Product::with(self::RELATIONS)
                 ->where('active', 1)
                 ->get();
-            $result = new Collection();
-            $products->map(function ($item) use ($result): Dto {
-                return $result[] = ProductDto::fromModel($item);
-            });
 
-            return collect($result);
+            return $this->mapProductsToDtoCollection($products);
         } catch (QueryException $e) {
             Log::error("SQL exception thrown ".$e);
             throw $e;
@@ -82,7 +65,7 @@ class ProductServiceImpl implements ProductService
     public function getProductById(int $id): ProductDto
     {
         try {
-            $product = Product::with(['category', 'measureUnit', 'company'])
+            $product = Product::with(self::RELATIONS)
                 ->withTrashed()
                 ->where('id', $id)
                 ->first();
@@ -107,19 +90,10 @@ class ProductServiceImpl implements ProductService
                 throw new ErpException("Product not found.", 400);
             }
 
-            $product->item_code = $productDto->itemCode;
-            $product->product_name = $productDto->productName;
-            $product->product_description = $productDto->productDescription;
-            $product->product_type_id = $productDto->productTypeId;
-            $product->category_id = $productDto->categoryId;
-            $product->low_stock_qty = $productDto->lowStockQty ?? 0;
-            $product->unit_id = $productDto->unitId;
-            $product->on_sale = $productDto->onSale ?? 0;
-            $product->active = $productDto->active;
-            $product->company_id = $productDto->companyId;
+            $product->fill($this->mapDtoToAttributes($productDto));
             $product->update();
 
-            return ProductDto::fromModel($product->load(['category', 'measureUnit', 'company']));
+            return ProductDto::fromModel($product->load(self::RELATIONS));
         } catch (QueryException $e) {
             Log::error("SQL exception thrown ".$e);
             throw $e;
@@ -165,5 +139,32 @@ class ProductServiceImpl implements ProductService
             Log::error("Unknown exception throws ".$e);
             throw new ErpException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    private function mapDtoToAttributes(ProductDto $productDto): array
+    {
+        return [
+            'item_code' => $productDto->itemCode,
+            'product_name' => $productDto->productName,
+            'product_description' => $productDto->productDescription,
+            'product_type_id' => $productDto->productTypeId,
+            'category_id' => $productDto->categoryId,
+            'low_stock_qty' => $productDto->lowStockQty ?? 0,
+            'unit_id' => $productDto->unitId,
+            'on_sale' => $productDto->onSale ?? 0,
+            'active' => $productDto->active,
+            'company_id' => $productDto->companyId,
+            'tax_category_id' => $productDto->taxCategoryId,
+        ];
+    }
+
+    private function mapProductsToDtoCollection(Collection $products): Collection
+    {
+        $result = new Collection();
+        $products->map(function ($item) use ($result): Dto {
+            return $result[] = ProductDto::fromModel($item);
+        });
+
+        return collect($result);
     }
 }

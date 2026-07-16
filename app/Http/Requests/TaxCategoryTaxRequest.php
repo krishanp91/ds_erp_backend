@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use App\Exceptions\ErpValidationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
-class ProductRequest extends FormRequest
+class TaxCategoryTaxRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,20 +15,10 @@ class ProductRequest extends FormRequest
 
     public function rules(): array
     {
-        Log::info("Request came to rules in product request ".$this->content);
-
         $sharedRules = [
-            'productName' => 'required|max:100',
-            'productTypeId' => 'required|integer',
-            'active' => 'required|integer|in:0,1',
-            'itemCode' => 'nullable|max:100',
-            'productDescription' => 'nullable|max:250',
-            'categoryId' => 'nullable|integer',
-            'lowStockQty' => 'nullable|numeric',
-            'unitId' => 'nullable|integer',
-            'onSale' => 'nullable|integer|in:0,1',
-            'companyId' => 'nullable|integer',
-            'taxCategoryId' => 'nullable|integer|exists:tax_categories,id',
+            'taxCategoryId' => 'required|integer|exists:tax_categories,id',
+            'taxId' => 'required|integer|exists:taxes,id',
+            'sequence' => 'required|integer',
         ];
 
         switch ($this->method()) {
@@ -51,7 +40,6 @@ class ProductRequest extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
-        Log::error("Request validation failed ".$validator->errors()->first());
         throw new ErpValidationException($validator->errors()->first(), 400);
     }
 }

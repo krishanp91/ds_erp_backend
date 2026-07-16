@@ -69,6 +69,11 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *         property="companyId",
  *         type="integer",
  *         description="Company id"
+ *     ),
+ *     @OA\Property(
+ *         property="taxCategoryId",
+ *         type="integer",
+ *         description="Tax category id"
  *     )
  * )
  *
@@ -131,6 +136,16 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *         property="companyId",
  *         type="integer",
  *         description="Company id"
+ *     ),
+ *     @OA\Property(
+ *         property="taxCategoryId",
+ *         type="integer",
+ *         description="Tax category id"
+ *     ),
+ *     @OA\Property(
+ *         property="taxCategory",
+ *         ref="#/components/schemas/TaxCategoryResponse",
+ *         description="Related tax category"
  *     )
  * )
  *
@@ -147,6 +162,8 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  * @property int|null $onSale
  * @property int $active
  * @property int|null $companyId
+ * @property int|null $taxCategoryId
+ * @property TaxCategoryDto|null $taxCategory
  * @property Carbon|null $createdAt
  * @property Carbon|null $updatedAt
  * @property Carbon|null $deletedAt
