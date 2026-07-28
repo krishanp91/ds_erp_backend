@@ -10,16 +10,23 @@ use Cerbero\Dto\Dto;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductServiceImpl implements ProductService
 {
-    private const RELATIONS = ['category', 'measureUnit', 'company', 'taxCategory'];
+    private const RELATIONS = ['category', 'measureUnit', 'company', 'taxCategory', 'barcodes'];
 
     public function createProduct(ProductDto $productDto): ProductDto
     {
         try {
-            $product = Product::create($this->mapDtoToAttributes($productDto));
+            $product = DB::transaction(function () use ($productDto) {
+                $product = Product::create($this->mapDtoToAttributes($productDto));
+                $this->createProductBarcodes($product, $productDto);
+
+                return $product;
+            });
 
             return ProductDto::fromModel($product->load(self::RELATIONS));
         } catch (QueryException $e) {
@@ -138,6 +145,20 @@ class ProductServiceImpl implements ProductService
         } catch (Exception $e) {
             Log::error("Unknown exception throws ".$e);
             throw new ErpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    private function createProductBarcodes(Product $product, ProductDto $productDto): void
+    {
+        $barcodes = isset($productDto->barcodes) ? $productDto->barcodes : [];
+
+        foreach ($barcodes as $barcodeDto) {
+            $product->barcodes()->create([
+                'barcode' => $barcodeDto->barcode,
+                'barcode_type' => $barcodeDto->barcodeType,
+                'active' => 1,
+                'created_by' => Auth::id(),
+            ]);
         }
     }
 

@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DTOs\MeasureUnitDto;
+use App\Dtos\MeasureUnitDto;
 use App\Http\Requests\MeasureUnitRequest;
 use App\Services\MeasureUnitService;
-use Exception;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
 
 use App\Models\MeasureUnit;
 
@@ -136,24 +133,12 @@ class MeasureUnitController extends Controller
      *     @OA\Response(response=500, description="Server error")
      * )
      */
-    public function updateMeasureUnit($id, Request $request) {
-        try {
-            $measureUnit = MeasureUnit::find($id);
+    public function updateMeasureUnit($id, MeasureUnitRequest $request)
+    {
+        $measureUnitDto = MeasureUnitDto::fromRequest($request);
+        $measureUnit = $this->measureUnitService->updateMeasureUnit($id, $measureUnitDto);
 
-            if ($measureUnit == null) {
-            return response()->json(["code"=>"Invalid Input", "message"=>"Measure unit not found"], 400);
-            }
-
-            $measureUnit->unit_name = $request->unit_name;
-            $measureUnit->description = $request->description;
-            $measureUnit->active = $request->active;
-            $measureUnit->update();
-
-            return response()->json($measureUnit, 200);
-        } catch(Exception $ex) {
-            Log::channel('debug')->error($ex->getMessage());
-            return response()->json(["message"=>$ex->getMessage()], 500);
-        }
+        return response()->json($measureUnit, 200);
     }
 
     /**

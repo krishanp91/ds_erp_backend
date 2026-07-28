@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
-use App\DTOs\MeasureUnitDto;
+use App\Dtos\MeasureUnitDto;
 
-interface MeasureUnitService {
+interface MeasureUnitService
+{
     function createMeasureUnit(MeasureUnitDto $measureUnitDto): MeasureUnitDto;
+
+    function updateMeasureUnit(int $id, MeasureUnitDto $measureUnitDto): MeasureUnitDto;
 }

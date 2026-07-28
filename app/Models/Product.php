@@ -39,6 +39,11 @@ class Product extends Model
         return $this->belongsTo('App\Models\TaxCategory', 'tax_category_id');
     }
 
+    public function barcodes()
+    {
+        return $this->hasMany('App\Models\ProductBarcode', 'item_id');
+    }
+
     public static function boot()
     {
         parent::boot();

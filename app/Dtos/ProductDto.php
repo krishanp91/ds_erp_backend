@@ -74,6 +74,12 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *         property="taxCategoryId",
  *         type="integer",
  *         description="Tax category id"
+ *     ),
+ *     @OA\Property(
+ *         property="barcodes",
+ *         type="array",
+ *         description="Product barcodes",
+ *         @OA\Items(ref="#/components/schemas/ProductBarcodeRequest")
  *     )
  * )
  *
@@ -146,6 +152,12 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *         property="taxCategory",
  *         ref="#/components/schemas/TaxCategoryResponse",
  *         description="Related tax category"
+ *     ),
+ *     @OA\Property(
+ *         property="barcodes",
+ *         type="array",
+ *         description="Product barcodes",
+ *         @OA\Items(ref="#/components/schemas/ProductBarcodeResponse")
  *     )
  * )
  *
@@ -164,6 +176,7 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  * @property int|null $companyId
  * @property int|null $taxCategoryId
  * @property TaxCategoryDto|null $taxCategory
+ * @property ProductBarcodeDto[]|null $barcodes
  * @property Carbon|null $createdAt
  * @property Carbon|null $updatedAt
  * @property Carbon|null $deletedAt

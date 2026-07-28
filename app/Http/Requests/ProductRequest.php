@@ -34,7 +34,11 @@ class ProductRequest extends FormRequest
 
         switch ($this->method()) {
             case 'POST':
-                return $sharedRules;
+                return array_merge($sharedRules, [
+                    'barcodes' => 'nullable|array',
+                    'barcodes.*.barcode' => 'required|string|max:100',
+                    'barcodes.*.barcodeType' => 'nullable|string|max:20',
+                ]);
             case 'PUT':
                 return array_merge(['id' => 'required'], $sharedRules);
             default:
