@@ -27,10 +27,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'UserController@register');
 Route::post('login', [UserController::class, 'authenticate']);
+Route::post('refresh', [UserController::class, 'refresh']);
 Route::get('open', 'DataController@open');
 Route::get('companies/{id}', [CompanyController::class, 'getCompanyDetails']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::post('logout', [UserController::class, 'logout']);
     Route::get('user', [UserController::class, 'getAuthenticatedUser']);
     Route::get('users/permissions/{locationId}/{moduleId}', [UserController::class, 'getUserPermissionsByLocationAndModule']);
 

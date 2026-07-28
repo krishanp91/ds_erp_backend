@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use JWTAuth;
 use Auth;
 
+use App\Dtos\TokenDto;
 use App\Models\User;
 use App\Models\RolePermission;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class UserController extends Controller
 {
@@ -35,8 +39,6 @@ class UserController extends Controller
    */
   public function authenticate(Request $request)
   {
-    $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
-
     $credentials = $request->only('email', 'password');
 
     try {
@@ -47,13 +49,84 @@ class UserController extends Controller
         return response()->json(['status' => 'Could not Create Token. Please Try Again.'], 500);
     }
 
-    User::find(Auth::id());
-
     $user = User::with('locations')->with('modules')->find(Auth::id());
 
-    $user->token = $token;
+    return response()->json($this->buildAuthResponse($user, $token), 200);
+  }
 
-    return response()->json($user, 200);
+  /**
+   * @OA\Post(
+   *     path="/refresh",
+   *     summary="Refresh an expired access token",
+   *     tags={"Authentication"},
+   *     security={{"bearerAuth":{}}},
+   *     @OA\Response(
+   *          response=200,
+   *          description="New access token issued",
+   *          @OA\JsonContent(ref="#/components/schemas/TokenResponse")
+   *     ),
+   *     @OA\Response(response=401, description="Refresh token expired or invalid")
+   * )
+   */
+  public function refresh(): JsonResponse
+  {
+    try {
+      $newToken = JWTAuth::parseToken()->refresh();
+    } catch (TokenExpiredException $e) {
+      return response()->json(['status' => 'Refresh token has expired. Please log in again.'], 401);
+    } catch (TokenInvalidException $e) {
+      return response()->json(['status' => 'Token is Invalid. Please log in again.'], 401);
+    } catch (JWTException $e) {
+      return response()->json(['status' => 'Authorization Token not found.'], 401);
+    }
+
+    $token = TokenDto::make([
+      'accessToken' => $newToken,
+      'tokenType' => 'bearer',
+      'expiresIn' => (int) config('jwt.ttl') * 60,
+      'refreshExpiresIn' => (int) config('jwt.refresh_ttl') * 60,
+    ]);
+
+    return response()->json($token, 200);
+  }
+
+  /**
+   * @OA\Post(
+   *     path="/logout",
+   *     summary="Invalidate the current access token",
+   *     tags={"Authentication"},
+   *     security={{"bearerAuth":{}}},
+   *     @OA\Response(response=200, description="Successfully logged out"),
+   *     @OA\Response(response=500, description="Failed to logout")
+   * )
+   */
+  public function logout()
+  {
+    try {
+      JWTAuth::parseToken()->invalidate(true);
+    } catch (JWTException $e) {
+      return response()->json(['status' => 'Failed to logout. Please try again.'], 500);
+    }
+
+    return response()->json(['status' => 'Successfully logged out'], 200);
+  }
+
+  private function buildAuthResponse(User $user, string $token): array
+  {
+    return array_merge(
+      $user->toArray(),
+      $this->buildTokenPayload($token)
+    );
+  }
+
+  private function buildTokenPayload(string $token): array
+  {
+    return [
+      'access_token' => $token,
+      'token_type' => 'bearer',
+      'expires_in' => (int) config('jwt.ttl') * 60,
+      'refresh_expires_in' => (int) config('jwt.refresh_ttl') * 60,
+    ];
   }
 
   private function getPermissionsForUserRole($userRoleId)
@@ -83,7 +156,7 @@ class UserController extends Controller
    *          @OA\JsonContent(
    *              type="object",
    *              @OA\Property(property="user", ref="#/components/schemas/UserResponse"),
-   *              @OA\Property(property="token", type="string", description="JWT access token")
+   *              @OA\Property(property="accessToken", type="string", description="JWT access token")
    *          )
    *     ),
    *     @OA\Response(response=400, description="Validation error")
@@ -108,7 +181,10 @@ class UserController extends Controller
 
     $token = JWTAuth::fromUser($user);
 
-    return response()->json(compact('user','token'),201);
+    return response()->json(array_merge(
+      ['user' => $user],
+      $this->buildTokenPayload($token)
+    ), 201);
   }
 
   /**

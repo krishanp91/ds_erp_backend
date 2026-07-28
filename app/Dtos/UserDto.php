@@ -93,7 +93,10 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *     @OA\Property(property="email", type="string", description="Email of the user"),
  *     @OA\Property(property="user_role_id", type="integer", description="User role id"),
  *     @OA\Property(property="active", type="integer", description="Active status of the user"),
- *     @OA\Property(property="token", type="string", description="JWT access token"),
+ *     @OA\Property(property="accessToken", type="string", description="JWT access token"),
+ *     @OA\Property(property="tokenType", type="string", example="bearer"),
+ *     @OA\Property(property="expiresIn", type="integer", description="Access token lifetime in seconds", example=900),
+ *     @OA\Property(property="refreshExpiresIn", type="integer", description="Maximum refresh window in seconds from login", example=86400),
  *     @OA\Property(
  *         property="locations",
  *         type="array",

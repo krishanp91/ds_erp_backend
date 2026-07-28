@@ -203,7 +203,7 @@ return [
                         "password" => [
                             "authorizationUrl" => config('app.url') . '/oauth/authorize',
                             "tokenUrl" => config('app.url') . '/oauth/token',
-                            "refreshUrl" => config('app.url') . '/token/refresh',
+                            "refreshUrl" => config('app.url') . '/api/refresh',
                             "scopes" => []
                         ],
                     ],
