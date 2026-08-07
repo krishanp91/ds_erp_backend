@@ -12,7 +12,7 @@ class Product extends Model
     const UPDATED_AT = 'modified_at';
 
     protected $fillable = [
-        'item_code', 'product_name', 'product_description', 'product_type_id',
+        'item_code', 'product_name', 'product_description', 'product_type',
         'category_id', 'low_stock_qty', 'unit_id', 'on_sale', 'active', 'company_id',
         'tax_category_id'
     ];

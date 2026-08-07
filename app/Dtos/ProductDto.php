@@ -14,7 +14,7 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *     type="object",
  *     title="ProductRequest",
  *     description="Product request body",
- *     required={"productName", "productTypeId", "active"},
+ *     required={"productName", "productType", "active"},
  *     @OA\Property(
  *         property="id",
  *         type="integer",
@@ -36,9 +36,10 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *         description="Description of the product"
  *     ),
  *     @OA\Property(
- *         property="productTypeId",
- *         type="integer",
- *         description="Product type id"
+ *         property="productType",
+ *         type="string",
+ *         maxLength=4,
+ *         description="S = Single product, V = Product variant, P = Product Pack"
  *     ),
  *     @OA\Property(
  *         property="categoryId",
@@ -109,9 +110,10 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  *         description="Description of the product"
  *     ),
  *     @OA\Property(
- *         property="productTypeId",
- *         type="integer",
- *         description="Product type id"
+ *         property="productType",
+ *         type="string",
+ *         maxLength=4,
+ *         description="S = Single product, V = Product variant, P = Product Pack"
  *     ),
  *     @OA\Property(
  *         property="categoryId",
@@ -167,7 +169,7 @@ use const Cerbero\Dto\IGNORE_UNKNOWN_PROPERTIES;
  * @property string|null $itemCode
  * @property string $productName
  * @property string|null $productDescription
- * @property int $productTypeId
+ * @property string $productType
  * @property int|null $categoryId
  * @property float|null $lowStockQty
  * @property int|null $unitId

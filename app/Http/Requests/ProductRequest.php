@@ -20,7 +20,7 @@ class ProductRequest extends FormRequest
 
         $sharedRules = [
             'productName' => 'required|max:100',
-            'productTypeId' => 'required|integer',
+            'productType' => 'required|string|max:4|in:S,V,P',
             'active' => 'required|integer|in:0,1',
             'itemCode' => 'nullable|max:100',
             'productDescription' => 'nullable|max:250',
@@ -30,15 +30,14 @@ class ProductRequest extends FormRequest
             'onSale' => 'nullable|integer|in:0,1',
             'companyId' => 'nullable|integer',
             'taxCategoryId' => 'nullable|integer|exists:tax_categories,id',
+            'barcodes' => 'nullable|array',
+            'barcodes.*.barcode' => 'required|string|max:100',
+            'barcodes.*.barcodeType' => 'nullable|string|max:20',
         ];
 
         switch ($this->method()) {
             case 'POST':
-                return array_merge($sharedRules, [
-                    'barcodes' => 'nullable|array',
-                    'barcodes.*.barcode' => 'required|string|max:100',
-                    'barcodes.*.barcodeType' => 'nullable|string|max:20',
-                ]);
+                return $sharedRules;
             case 'PUT':
                 return array_merge(['id' => 'required'], $sharedRules);
             default:

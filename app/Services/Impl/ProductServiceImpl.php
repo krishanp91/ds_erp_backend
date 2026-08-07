@@ -5,6 +5,7 @@ namespace App\Services\Impl;
 use App\Dtos\ProductDto;
 use App\Exceptions\ErpException;
 use App\Models\Product;
+use App\Models\ProductBarcode;
 use App\Services\ProductService;
 use Cerbero\Dto\Dto;
 use Exception;
@@ -91,18 +92,25 @@ class ProductServiceImpl implements ProductService
     public function updateProduct(int $id, ProductDto $productDto): ProductDto
     {
         try {
-            $product = Product::where('id', $id)->withTrashed()->first();
+            $product = DB::transaction(function () use ($id, $productDto) {
+                $product = Product::where('id', $id)->withTrashed()->first();
 
-            if ($product == null) {
-                throw new ErpException("Product not found.", 400);
-            }
+                if ($product == null) {
+                    throw new ErpException("Product not found.", 400);
+                }
 
-            $product->fill($this->mapDtoToAttributes($productDto));
-            $product->update();
+                $product->fill($this->mapDtoToAttributes($productDto));
+                $product->update();
+                $this->syncProductBarcodes($product, $productDto);
+
+                return $product;
+            });
 
             return ProductDto::fromModel($product->load(self::RELATIONS));
         } catch (QueryException $e) {
             Log::error("SQL exception thrown ".$e);
+            throw $e;
+        } catch (ErpException $e) {
             throw $e;
         } catch (Exception $e) {
             Log::error("Unknown exception throws ".$e);
@@ -162,13 +170,26 @@ class ProductServiceImpl implements ProductService
         }
     }
 
+    private function syncProductBarcodes(Product $product, ProductDto $productDto): void
+    {
+        if (!isset($productDto->barcodes)) {
+            return;
+        }
+
+        $product->barcodes()->get()->each(function (ProductBarcode $barcode) {
+            $barcode->delete();
+        });
+
+        $this->createProductBarcodes($product, $productDto);
+    }
+
     private function mapDtoToAttributes(ProductDto $productDto): array
     {
         return [
             'item_code' => $productDto->itemCode,
             'product_name' => $productDto->productName,
             'product_description' => $productDto->productDescription,
-            'product_type_id' => $productDto->productTypeId,
+            'product_type' => $productDto->productType,
             'category_id' => $productDto->categoryId,
             'low_stock_qty' => $productDto->lowStockQty ?? 0,
             'unit_id' => $productDto->unitId,

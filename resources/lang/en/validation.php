@@ -20,9 +20,11 @@ return [
             'required' => 'Product name is required.',
             'max' => 'Product name exceeds maximum :max characters.',
         ],
-        'productTypeId' => [
+        'productType' => [
             'required' => 'Product type is required.',
-            'integer' => 'Product type must be a valid integer.',
+            'string' => 'Product type must be a valid string.',
+            'max' => 'Product type exceeds maximum :max characters.',
+            'in' => 'Product type must be one of: S, V, P.',
         ],
         'active' => [
             'required' => 'Active status is required.',
