@@ -25,6 +25,10 @@ return [
         [
             App\Services\TaxCategoryTaxService::class,
             App\Services\Impl\TaxCategoryTaxServiceImpl::class
+        ],
+        [
+            App\Services\SupplierService::class,
+            App\Services\Impl\SupplierServiceImpl::class
         ]
     ]
 ];

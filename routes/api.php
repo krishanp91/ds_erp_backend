@@ -10,7 +10,6 @@ use App\Http\Controllers\TaxCategoryController;
 use App\Http\Controllers\TaxCategoryTaxController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\Validators\CreateSupplierValidator;
 
 use Illuminate\Support\Facades\Route;
 
@@ -91,7 +90,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::delete('measure-units/{id}', [MeasureUnitController::class, 'deleteMeasureUnit']);
 
     //supplier routes
-    Route::post('suppliers', [SupplierController::class, 'createSupplier'])->middleware([
-        CreateSupplierValidator::class
-    ]);
+    Route::post('suppliers', [SupplierController::class, 'createSupplier']);
+    Route::get('suppliers', [SupplierController::class, 'getAllSuppliers']);
+    Route::get('suppliers/active', [SupplierController::class, 'getActiveSuppliers']);
+    Route::get('suppliers/next-code', [SupplierController::class, 'getNextSupplierCode']);
+    Route::get('suppliers/{id}', [SupplierController::class, 'getSupplier']);
+    Route::put('suppliers/{id}', [SupplierController::class, 'updateSupplier']);
+    Route::delete('suppliers/{id}', [SupplierController::class, 'deleteSupplier']);
+    Route::put('suppliers/{id}/active', [SupplierController::class, 'activateSupplier']);
 });

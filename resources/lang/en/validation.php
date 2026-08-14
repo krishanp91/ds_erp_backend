@@ -37,6 +37,31 @@ return [
         'productDescription' => [
             'max' => 'Product description exceeds maximum :max characters.',
         ],
+        'supplierCode' => [
+            'required' => 'Supplier code is required.',
+            'max' => 'Supplier code exceeds maximum :max characters.',
+            'unique' => 'Supplier code already taken.',
+        ],
+        'supplierName' => [
+            'required' => 'Supplier name is required.',
+            'max' => 'Supplier name exceeds maximum :max characters.',
+        ],
+        'contacts.*.contactName' => [
+            'required' => 'Contact name is required.',
+            'max' => 'Contact name exceeds maximum :max characters.',
+        ],
+        'contacts.*.isPrimary' => [
+            'required' => 'Contact primary flag is required.',
+            'in' => 'Contact primary flag must be 0 or 1.',
+        ],
+        'addresses.*.addressType' => [
+            'required' => 'Address type is required.',
+            'max' => 'Address type exceeds maximum :max characters.',
+        ],
+        'addresses.*.addressLine1' => [
+            'required' => 'Address line 1 is required.',
+            'max' => 'Address line 1 exceeds maximum :max characters.',
+        ],
     ],
     "category.update.name.exists" => "Category name already taken.",
     "measure.unit.update.name.exists" => "Measure unit name already taken.",

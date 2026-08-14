@@ -3,11 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class ContactDetail extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
-        'id', 'address_line_1', 'address_line_2', 'address_line_3', 'address_line_4', 
-        'mobile_no', 'telephone', 'email', 'active'
+        'contact_name', 'designation', 'email', 'phone', 'mobile',
+        'is_primary', 'created_by', 'updated_by', 'deleted_by'
     ];
+
+    protected $guarded = ['id', 'deleted_at'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        ContactDetail::deleting(function ($contactDetail) {
+            $contactDetail->deleted_by = Auth::id();
+            $contactDetail->save();
+        });
+
+        ContactDetail::restoring(function ($contactDetail) {
+            $contactDetail->deleted_by = null;
+            $contactDetail->save();
+        });
+    }
 }
